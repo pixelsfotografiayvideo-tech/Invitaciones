@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- EDITAR: Cambia el título de la pestaña del navegador -->
+    <title>Nuestra Boda - Juan y Sol</title>
+    
+    <!-- Librería de Iconos (Font Awesome) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Fuentes de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- ESTILOS CSS - NO ES NECESARIO EDITAR A MENOS QUE QUIERAS CAMBIAR COLORES O FUENTES --- */
+        :root {
+            --color-fondo: #F0F3F0;
+            --color-principal: #4A5C4E;
+            --color-texto: #333333;
+            --color-blanco: #FFFFFF;
+            --fuente-titulos: 'Dancing Script', cursive;
+            --fuente-cuerpo: 'Montserrat', sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: var(--fuente-cuerpo);
+            background-color: var(--color-fondo);
+            color: var(--color-texto);
+            display: flex;
+            justify-content: center;
+            background-image: url('https://www.transparenttextures.com/patterns/watercolor.png'); /* Fondo sutil */
+        }
+
+        .invitacion-container {
+            max-width: 500px;
+            width: 100%;
+            background-color: var(--color-blanco);
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            text-align: center;
+            padding: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .invitacion-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 200px;
+            background: linear-gradient(to bottom, rgba(176, 191, 176, 0.4), transparent);
+            z-index: 1;
+        }
+
+        .section-content {
+            padding: 15px 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        header h1 {
+            font-family: var(--fuente-titulos);
+            font-size: 4rem;
+            color: var(--color-principal);
+            margin: 20px 0 0 0;
+        }
+
+        header h2 {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--color-principal);
+            margin-top: -10px;
+            letter-spacing: 2px;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            font-family: var(--fuente-titulos);
+            color: var(--color-principal);
+            margin-bottom: 10px;
+        }
+
+        .icon {
+            font-size: 2.5rem;
+            color: var(--color-principal);
+            margin-bottom: 10px;
+        }
+
+        .evento-item {
+            margin-bottom: 25px;
+        }
+        
+        .evento-item p {
+            margin: 4px 0;
+            font-size: 0.95rem;
+        }
+
+        .evento-item .hora {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+        
+        .evento-item .lugar {
+            font-weight: bold;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 25px;
+            background-color: var(--color-principal);
+            color: var(--color-blanco);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 500;
+            margin-top: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #38463b;
+        }
+        
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--color-principal);
+            border: 2px solid var(--color-principal);
+        }
+        
+        .btn-secondary:hover {
+            background-color: rgba(74, 92, 78, 0.1);
+        }
+        
+        hr {
+            border: 0;
+            height: 1px;
+            background-color: #e0e0e0;
+            margin: 30px 50px;
+        }
+        
+        /* Galería de fotos */
+        .galeria {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 0 20px;
+            margin-top: 10px;
+        }
+        
+        .foto-polaroid {
+            background: var(--color-blanco);
+            padding: 10px 10px 20px 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        .foto-polaroid img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .foto-polaroid:nth-child(1) { transform: rotate(-5deg); }
+        .foto-polaroid:nth-child(2) { transform: rotate(4deg); }
+        .foto-polaroid:nth-child(3) { transform: rotate(6deg); }
+        .foto-polaroid:nth-child(4) { transform: rotate(-3deg); }
+        
+        .foto-polaroid:hover {
+            transform: rotate(0) scale(1.05);
+            z-index: 10;
+        }
+
+        /* Modal para regalo */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.6);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            background: var(--color-blanco);
+            padding: 30px;
+            border-radius: 10px;
+            text-align: center;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s;
+        }
+        
+        .modal-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-overlay.visible .modal-content {
+            transform: scale(1);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #888;
+        }
+        
+        .datos-bancarios p {
+            margin: 8px 0;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="invitacion-container">
+
+        <!-- ===== SECCIÓN ENCABEZADO ===== -->
+        <header class="section-content">
+            <!-- EDITAR: Nombres de los novios -->
+            <h1>Juan y Sol</h1>
+            <h2>¡NOS CASAMOS!</h2>
+        </header>
+        
+        <hr>
+
+        <!-- ===== SECCIÓN CUÁNDO Y DÓNDE ===== -->
+        <section class="section-content">
+            <h3>¿Cuándo y Dónde?</h3>
+
+            <!-- --- Ceremonia --- -->
+            <div class="evento-item">
+                <i class="icon fa-solid fa-church"></i>
+                <!-- EDITAR: Hora, Nombre y Dirección de la Iglesia -->
+                <p class="hora">21:00 HS</p>
+                <p class="lugar">Iglesia Santa María Madre</p>
+                <p>Calle 1234, Localidad</p>
+                <!-- EDITAR: Enlace de Google Maps para la iglesia -->
+                <a href="https://www.google.com/maps/search/?api=1&query=..." target="_blank" class="btn">Llegar a la iglesia</a>
+            </div>
+
+            <!-- --- Fiesta --- -->
+            <div class="evento-item">
+                <i class="icon fa-solid fa-champagne-glasses"></i>
+                <!-- EDITAR: Hora, Nombre y Dirección del Salón -->
+                <p class="hora">22:30 HS</p>
+                <p class="lugar">El Quincho Eventos</p>
+                <p>Posadas 1618, El Talar</p>
+                <!-- EDITAR: Enlace de Google Maps para el salón -->
+                <a href="https://www.google.com/maps/search/?api=1&query=..." target="_blank" class="btn">Llegar al salón</a>
+            </div>
+            
+            <a href="#" class="btn btn-secondary" id="save-the-date-btn">
+                <i class="fa-regular fa-calendar-plus"></i> Agendar
+            </a>
+        </section>
+
+        <hr>
+
+        <!-- ===== SECCIÓN CÓDIGO DE VESTIMENTA ===== -->
+        <section class="section-content">
+            <h3>Dress Code</h3>
+            <i class="icon fa-solid fa-user-tie"></i>
+            <!-- EDITAR: Código de vestimenta -->
+            <p style="font-size: 1.2rem; font-weight: bold; color: var(--color-principal);">ELEGANTE</p>
+        </section>
+
+        <hr>
+
+        <!-- ===== SECCIÓN REGALO ===== -->
+        <section class="section-content">
+            <h3>Regalo</h3>
+            <i class="icon fa-solid fa-gift"></i>
+            <p>Para nosotros lo más importante es tu presencia, pero si quisieras hacernos un regalo, te dejamos nuestros datos bancarios.</p>
+            <button class="btn" id="open-modal-btn">Ver datos</button>
+        </section>
+        
+        <hr>
+
+        <!-- ===== SECCIÓN MÚSICA ===== -->
+        <section class="section-content">
+            <h3>Música</h3>
+            <i class="icon fa-solid fa-music"></i>
+            <p>Para que la fiesta sea completa, ¡ayudanos eligiendo aquellas canciones que no pueden faltar!</p>
+            <!-- EDITAR: Enlace a un formulario (ej. Google Forms) o a un chat para sugerir canciones -->
+            <a href="https://forms.gle/..." target="_blank" class="btn">Sugerir Canción</a>
+        </section>
+
+        <hr>
+
+        <!-- ===== SECCIÓN COMIDA ===== -->
+        <section class="section-content">
+            <h3>Comida</h3>
+            <i class="icon fa-solid fa-utensils"></i>
+            <p>Si contás con alguna restricción alimentaria (celíaco, vegano, vegetariano, etc.), por favor completá el siguiente formulario.</p>
+            <!-- EDITAR: Enlace a un formulario (ej. Google Forms) para restricciones alimentarias -->
+            <a href="https://forms.gle/..." target="_blank" class="btn">Completar</a>
+        </section>
+        
+        <hr>
+        
+        <!-- ===== SECCIÓN INSTAGRAM ===== -->
+        <section class="section-content">
+            <!-- EDITAR: Hashtag de la boda -->
+            <h3>#BodaSolJuan</h3>
+            <i class="icon fa-brands fa-instagram"></i>
+            <p>Usá nuestro hashtag para etiquetar tus fotos y videos de la boda.</p>
+            <!-- EDITAR: Enlace al hashtag en Instagram -->
+            <a href="https://www.instagram.com/explore/tags/BodaSolJuan/" target="_blank" class="btn">Ver en Instagram</a>
+        </section>
+
+        <hr>
+
+        <!-- ===== SECCIÓN GALERÍA DE FOTOS ===== -->
+        <section class="section-content">
+            <h3>Cada familia tiene su historia...<br>¡Bienvenidos a la nuestra!</h3>
+            <div class="galeria">
+                <!-- EDITAR: Reemplaza los enlaces "..." con los enlaces directos a tus imágenes -->
+                <div class="foto-polaroid"><img src="https://via.placeholder.com/200x200.png?text=Foto+1" alt="Foto de la pareja 1"></div>
+                <div class="foto-polaroid"><img src="https://via.placeholder.com/200x200.png?text=Foto+2" alt="Foto de la pareja 2"></div>
+                <div class="foto-polaroid"><img src="https://via.placeholder.com/200x200.png?text=Foto+3" alt="Foto de la pareja 3"></div>
+                <div class="foto-polaroid"><img src="https://via.placeholder.com/200x200.png?text=Foto+4" alt="Foto de la pareja 4"></div>
+            </div>
+        </section>
+
+        <hr>
+
+        <!-- ===== SECCIÓN CONFIRMAR ASISTENCIA (RSVP) ===== -->
+        <section class="section-content">
+            <h3>¡Los esperamos!</h3>
+            <i class="icon fa-regular fa-calendar-check"></i>
+            <!-- EDITAR: Fecha límite para confirmar -->
+            <p>Por favor, confirmar asistencia hasta el <strong>30 de Abril</strong>.</p>
+            <!-- EDITAR: Número de WhatsApp del novio (sin espacios ni símbolos) -->
+            <a href="https://wa.me/5491100000000?text=¡Hola%20Juan!%20Confirmo%20mi%20asistencia%20a%20la%20boda.%20¡Nos%20vemos!" target="_blank" class="btn">Confirmar al novio</a>
+            <!-- EDITAR: Número de WhatsApp de la novia (sin espacios ni símbolos) -->
+            <a href="https://wa.me/5491111111111?text=¡Hola%20Sol!%20Confirmo%20mi%20asistencia%20a%20la%20boda.%20¡Nos%20vemos!" target="_blank" class="btn">Confirmar a la novia</a>
+        </section>
+        
+        <footer>
+            <p style="font-size: 0.8rem; color: #aaa; margin-top: 20px;">Diseño por <a href="https://diditarjetas.com/bodaestandar" target="_blank" style="color: #aaa;">didi.tarjetas</a></p>
+        </footer>
+    </div>
+    
+    <!-- ===== MODAL PARA DATOS BANCARIOS (REGALO) ===== -->
+    <div class="modal-overlay" id="gift-modal">
+        <div class="modal-content">
+            <span class="close-modal" id="close-modal-btn">&times;</span>
+            <h3>Nuestro Regalo</h3>
+            <div class="datos-bancarios">
+                <!-- EDITAR: Datos bancarios. Puedes añadir o quitar líneas <p> según necesites. -->
+                <p><strong>Banco:</strong> Banco Ejemplo</p>
+                <p><strong>Titular:</strong> Juan Pérez</p>
+                <p><strong>CBU/CVU:</strong> 0000001234567890000000</p>
+                <p><strong>Alias:</strong> JUAN.SOL.BODA</p>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+    // --- JAVASCRIPT PARA FUNCIONALIDADES ---
+    document.addEventListener('DOMContentLoaded', function() {
+
+        // --- Funcionalidad del Modal de Regalo ---
+        const openModalBtn = document.getElementById('open-modal-btn');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const giftModal = document.getElementById('gift-modal');
+
+        openModalBtn.addEventListener('click', () => {
+            giftModal.classList.add('visible');
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            giftModal.classList.remove('visible');
+        });
+
+        giftModal.addEventListener('click', (e) => {
+            if (e.target === giftModal) {
+                giftModal.classList.remove('visible');
+            }
+        });
+
+        // --- Funcionalidad para generar archivo de calendario (.ics) ---
+        const saveTheDateBtn = document.getElementById('save-the-date-btn');
+        saveTheDateBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // --- EDITAR: Detalles del evento para el calendario ---
+            const eventDetails = {
+                title: "Boda Juan y Sol",
+                description: "Ceremonia de boda de Juan y Sol.",
+                // Formato: YYYY, MM (0-11), DD, HH, MM
+                // Ejemplo para 12 de Mayo a las 21:00 -> new Date(2024, 4, 12, 21, 0)
+                // ¡RECUERDA QUE LOS MESES VAN DE 0 (Enero) a 11 (Diciembre)!
+                startTime: new Date(2024, 4, 12, 21, 0), 
+                endTime: new Date(2024, 4, 12, 22, 30), // Fin estimado de la ceremonia
+                location: "Iglesia Santa María Madre, Calle 1234, Localidad"
+            };
+            // --- FIN DE LA EDICIÓN DEL EVENTO ---
+
+            // Función para formatear la fecha para el archivo .ics
+            function formatICalDate(date) {
+                return date.toISOString().replace(/[-:.]/g, '').slice(0, 15) + 'Z';
+            }
+
+            const icsContent = [
+                'BEGIN:VCALENDAR',
+                'VERSION:2.0',
+                'BEGIN:VEVENT',
+                `URL:${document.URL}`,
+                `DTSTART:${formatICalDate(eventDetails.startTime)}`,
+                `DTEND:${formatICalDate(eventDetails.endTime)}`,
+                `SUMMARY:${eventDetails.title}`,
+                `DESCRIPTION:${eventDetails.description}`,
+                `LOCATION:${eventDetails.location}`,
+                'END:VEVENT',
+                'END:VCALENDAR'
+            ].join('\n');
+
+            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(blob);
+            link.download = 'boda-juan-y-sol.ics';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        });
+    });
+    </script>
+
+</body>
+</html>
