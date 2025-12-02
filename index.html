@@ -2,449 +2,599 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- EDITAR: Cambia el título de la pestaña del navegador -->
-    <title>Nuestra Boda - Juan y Jesica</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Mis XV - Marty</title>
     
-    <!-- Librería de Iconos (Font Awesome) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    
-    <!-- Fuentes de Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
     <style>
-        /* --- ESTILOS CSS - NO ES NECESARIO EDITAR A MENOS QUE QUIERAS CAMBIAR COLORES O FUENTES --- */
+        /* ========================================================= */
+        /* --- CONFIGURACIÓN DE COLORES Y VARIABLES GLOBALES ---      */
+        /* ========================================================= */
         :root {
-            --color-fondo: #F0F3F0;
-            --color-principal: #4A5C4E;
-            --color-texto: #333333;
-            --color-blanco: #FFFFFF;
-            --fuente-titulos: 'Dancing Script', cursive;
-            --fuente-cuerpo: 'Montserrat', sans-serif;
+            /* Paleta base: Rosa Viejo / Dorado / Crema */
+            --primary-color: #d4a373; /* Dorado suave */
+            --accent-color: #e2b4bd;  /* Rosa Palo / Accent */
+            --bg-color: #faf9f6;      /* Blanco hueso */
+            --text-color: #555555;
+            --dark-bg: #2c2c2c;
+            --sparkle-color: #e0e0e0; /* Color base para el efecto de brillo/polvo */
         }
 
+        /* --- ESTILOS GENERALES Y RESET --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            text-align: center;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        h1, h2, h3 { font-weight: normal; }
+        
+        .font-script { font-family: 'Great Vibes', cursive; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+
+        /* --- BOTÓN DE MÚSICA FLOTANTE (FAB) --- */
+        .music-fab {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            width: 50px;
+            height: 50px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 999;
+            cursor: pointer;
+            border: 1px solid var(--primary-color);
+            transition: transform 0.3s;
+        }
+        .music-rotating { animation: spin 4s linear infinite; }
+        .music-fab i { color: var(--primary-color); font-size: 1.2rem; }
+
+        /* --- HERO SECTION (PORTADA) --- */
+        header {
+            height: 100vh;
+            /* IMAGEN DE FONDO - REEMPLAZAR URL */
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.4)), url('https://images.unsplash.com/photo-1512141633501-8eb941885b5f?q=80&w=2000&auto=format&fit=crop') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            animation: fadeInDown 1.5s ease;
+        }
+
+        .hero-title {
+            font-size: 6rem;
             margin: 0;
-            padding: 0;
-            font-family: var(--fuente-cuerpo);
-            background-color: var(--color-fondo);
-            color: var(--color-texto);
+            line-height: 1.1;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+            animation: zoomIn 2s ease;
+        }
+
+        .hero-date {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.8);
+            border-bottom: 1px solid rgba(255,255,255,0.8);
+            padding: 10px 30px;
+            animation: fadeInUp 1.5s ease;
+        }
+
+        .arrow-down {
+            position: absolute;
+            bottom: 30px;
+            animation: bounce 2s infinite;
+            font-size: 1.5rem;
+            opacity: 0.8;
+        }
+
+        /* --- FRASE / INTRO --- */
+        .intro {
+            padding: 80px 20px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .intro-text {
+            font-style: italic;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #777;
+        }
+
+        /* --- COUNTDOWN --- */
+        .countdown-section {
+            background-color: #fff;
+            padding: 60px 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.03);
+            margin: 0 20px;
+            border-radius: 20px;
+            position: relative;
+            top: -30px;
+        }
+
+        .timer-container {
             display: flex;
             justify-content: center;
-            background-image: url('https://res.cloudinary.com/dgo3agrzb/image/upload/v1756333185/Screenshot_20230127_152730_Instagram_mn03bh.jpg'); /* Fondo sutil */
+            gap: 15px;
+            flex-wrap: wrap;
         }
 
-        .invitacion-container {
-            max-width: 500px;
-            width: 100%;
-            background-color: var(--color-blanco);
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-            text-align: center;
-            padding: 20px 0;
+        .time-box {
+            background-color: var(--accent-color);
+            color: white;
+            width: 75px;
+            height: 75px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(226, 180, 189, 0.4);
+        }
+        .time-number { font-size: 1.5rem; font-weight: 600; line-height: 1; }
+        .time-label { font-size: 0.6rem; text-transform: uppercase; margin-top: 5px; }
+
+        /* --- SECCIONES COMUNES --- */
+        .section-title {
+            font-size: 3.5rem;
+            color: var(--primary-color);
+            margin-bottom: 40px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* --- BOTONES --- */
+        .btn-custom {
+            display: inline-block;
+            padding: 10px 25px;
+            border: 1px solid var(--primary-color);
+            color: var(--primary-color);
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .btn-custom:hover { background: var(--primary-color); color: #fff; }
+
+        .btn-whatsapp {
+            background: #25D366;
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            border-radius: 50px;
+            font-size: 1rem;
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .btn-whatsapp:hover { background: #1ebc57; transform: scale(1.05); }
+
+        /* --- PARALLAX MID SECTION --- */
+        .parallax-divider {
+            height: 350px;
+            /* IMAGEN SEPARADORA - REEMPLAZAR URL */
+            background: url('https://images.unsplash.com/photo-1520052205864-92d242b3a76b?q=80&w=1500&auto=format&fit=crop') fixed center;
+            background-size: cover;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .parallax-text { 
+            color: white; 
+            font-size: 3rem; 
+            background: rgba(0,0,0,0.3); 
+            padding: 10px 30px;
+            border: 1px solid white;
+            font-family: 'Great Vibes', cursive;
+        }
+
+        /* --- DETALLES (Dress Code / Regalos) --- */
+        .details-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+            padding: 60px 20px;
+            background: #fff;
+        }
+        .detail-item { max-width: 300px; }
+        .detail-icon { font-size: 2.5rem; color: var(--accent-color); margin-bottom: 15px; }
+        
+        /* Estilo para las secciones de contenido */
+        .songs-section, .menu-section {
+            padding: 80px 20px;
+            background-color: #f7f7f7; /* Fondo ligeramente diferente para contraste */
+        }
+        .menu-section {
+            background-color: var(--bg-color);
+        }
+
+        /* --- SECCIÓN "LA RUTA EVENTOS" --- */
+        .route-section {
+            background-color: black;
+            color: white;
+            padding: 80px 20px;
+            position: relative;
+            overflow: hidden; /* Para contener el efecto de polvo */
+        }
+
+        .route-content {
+            position: relative;
+            z-index: 2; /* Asegura que el contenido esté por encima del polvo */
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .route-title {
+            font-family: 'Great Vibes', cursive;
+            font-size: 4.5rem; /* Ajustado para un mejor tamaño en móviles */
+            line-height: 1;
+            text-shadow: 
+                0 0 5px var(--sparkle-color), 
+                0 0 10px var(--sparkle-color), 
+                0 0 15px var(--sparkle-color);
+            margin-bottom: 10px;
+        }
+
+        .route-event-text {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+            color: var(--sparkle-color);
+        }
+
+        .btn-route {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 35px;
+            background-color: var(--sparkle-color); /* Fondo gris claro */
+            color: black;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-weight: 600;
+            letter-spacing: 1px;
+            border-radius: 5px;
+            transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 4px 15px rgba(224, 224, 224, 0.2);
         }
-        
-        .invitacion-container::before {
+
+        .btn-route::before { /* Efecto de flecha en el botón */
             content: '';
             position: absolute;
             top: 0;
-            left: 0;
-            right: 0;
-            height: 200px;
-            background: linear-gradient(to bottom, rgba(176, 191, 176, 0.4), transparent);
+            right: -20px;
+            width: 40px;
+            height: 100%;
+            background: var(--sparkle-color);
+            transform: skewX(-20deg);
+            z-index: 0;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-route span {
+            position: relative;
             z-index: 1;
         }
 
-        .section-content {
-            padding: 15px 30px;
-            position: relative;
-            z-index: 2;
+        .btn-route:hover {
+            background-color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+        }
+        .btn-route:hover::before {
+            right: -30px; /* Mueve la flecha en hover */
         }
 
-        header h1 {
-            font-family: var(--fuente-titulos);
-            font-size: 4rem;
-            color: var(--color-principal);
-            margin: 20px 0 0 0;
-        }
-
-        header h2 {
-            font-size: 1.5rem;
-            font-weight: 500;
-            color: var(--color-principal);
-            margin-top: -10px;
-            letter-spacing: 2px;
-        }
-
-        h3 {
-            font-size: 1.8rem;
-            font-family: var(--fuente-titulos);
-            color: var(--color-principal);
-            margin-bottom: 10px;
-        }
-
-        .icon {
-            font-size: 2.5rem;
-            color: var(--color-principal);
-            margin-bottom: 10px;
-        }
-
-        .evento-item {
-            margin-bottom: 25px;
-        }
-        
-        .evento-item p {
-            margin: 4px 0;
-            font-size: 0.95rem;
-        }
-
-        .evento-item .hora {
-            font-weight: bold;
-            font-size: 1.1rem;
-        }
-        
-        .evento-item .lugar {
-            font-weight: bold;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 10px 25px;
-            background-color: var(--color-principal);
-            color: var(--color-blanco);
-            text-decoration: none;
-            border-radius: 50px;
-            font-weight: 500;
-            margin-top: 10px;
-            transition: background-color 0.3s ease;
-        }
-
-        .btn:hover {
-            background-color: #38463b;
-        }
-        
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--color-principal);
-            border: 2px solid var(--color-principal);
-        }
-        
-        .btn-secondary:hover {
-            background-color: rgba(74, 92, 78, 0.1);
-        }
-        
-        hr {
-            border: 0;
-            height: 1px;
-            background-color: #e0e0e0;
-            margin: 30px 50px;
-        }
-        
-        /* Galería de fotos */
-        .galeria {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            padding: 0 20px;
-            margin-top: 10px;
-        }
-        
-        .foto-polaroid {
-            background: var(--color-blanco);
-            padding: 10px 10px 20px 10px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            transition: transform 0.2s ease-in-out;
-        }
-        
-        .foto-polaroid img {
-            width: 100%;
-            height: auto;
-            display: block;
-        }
-
-        .foto-polaroid:nth-child(1) { transform: rotate(-5deg); }
-        .foto-polaroid:nth-child(2) { transform: rotate(4deg); }
-        .foto-polaroid:nth-child(3) { transform: rotate(6deg); }
-        .foto-polaroid:nth-child(4) { transform: rotate(-3deg); }
-        
-        .foto-polaroid:hover {
-            transform: rotate(0) scale(1.05);
-            z-index: 10;
-        }
-
-        /* Modal para regalo */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
+        /* Efecto de polvo de estrellas */
+        .sparkle-effect {
+            position: absolute;
+            bottom: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.6);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            transition: opacity 0.3s, visibility 0.3s;
-            z-index: 1000;
+            height: 150px; /* Altura del efecto de polvo */
+            background: radial-gradient(ellipse at 50% 100%, rgba(255,255,255,0.2) 0%, transparent 70%);
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            opacity: 0.8;
+            pointer-events: none;
+            z-index: 1;
+            /* Animación sutil de brillo o movimiento */
+            animation: sparklePulse 5s infinite ease-in-out;
         }
-        
-        .modal-content {
-            background: var(--color-blanco);
-            padding: 30px;
-            border-radius: 10px;
-            text-align: center;
-            position: relative;
-            transform: scale(0.9);
-            transition: transform 0.3s;
-        }
-        
-        .modal-overlay.visible {
-            opacity: 1;
-            visibility: visible;
+        @keyframes sparklePulse {
+            0% { transform: scaleX(1); opacity: 0.8; }
+            50% { transform: scaleX(1.02); opacity: 0.9; }
+            100% { transform: scaleX(1); opacity: 0.8; }
         }
 
-        .modal-overlay.visible .modal-content {
-            transform: scale(1);
+        /* --- SECCIÓN VALOR DE LA TARJETA --- */
+        .ticket-section {
+            padding: 80px 20px;
+            background-color: var(--bg-color);
         }
-        
-        .close-modal {
-            position: absolute;
-            top: 10px;
-            right: 15px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: #888;
+        .ticket-wrapper {
+            max-width: 700px;
+            margin: 0 auto;
+            text-align: center;
         }
-        
-        .datos-bancarios p {
-            margin: 8px 0;
-            text-align: left;
+        .ticket-table {
+            margin: 40px 0;
+            background: #fff;
+            padding: 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.04);
+        }
+        .ticket-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.07);
+            font-size: 1.2rem;
+        }
+        .ticket-row:last-child {
+            border-bottom: none;
+        }
+        .ticket-info {
+            margin-top: 30px;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--text-color);
+        }
+
+
+        /* --- ANIMATIONS KEYFRAMES --- */
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-10px);} 60% {transform: translateY(-5px);} }
+        @keyframes zoomIn { from {opacity: 0; transform: scale(0.5);} to {opacity: 1; transform: scale(1);} }
+
+        /* Media Queries para responsividad */
+        @media (max-width: 768px) {
+            .hero-title { font-size: 4rem; }
+            .hero-date { font-size: 1.2rem; padding: 8px 20px; }
+            .section-title { font-size: 2.8rem; }
+            .route-title { font-size: 3rem; }
+            .route-event-text { font-size: 0.9rem; letter-spacing: 3px; }
+            .btn-route { padding: 12px 25px; font-size: 0.9rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="invitacion-container">
-
-        <!-- ===== SECCIÓN ENCABEZADO ===== -->
-        <header class="section-content">
-            <!-- EDITAR: Nombres de los novios -->
-            <h1>Juan y esica</h1>
-            <h2>¡NOS CASAMOS!</h2>
-        </header>
-        
-        <hr>
-
-        <!-- ===== SECCIÓN CUÁNDO Y DÓNDE ===== -->
-        <section class="section-content">
-            <h3>¿Cuándo y Dónde?</h3>
-
-            <!-- --- Ceremonia --- -->
-            <div class="evento-item">
-                <i class="icon fa-solid fa-church"></i>
-                <!-- EDITAR: Hora, Nombre y Dirección de la Iglesia -->
-                <p class="hora">21:00 HS</p>
-                <p class="lugar">Iglesia Catedral </p>
-                <p>Bv .San juan 351</p>
-                <!-- EDITAR: Enlace de Google Maps para la iglesia -->
-                <a href="https://www.google.com/maps/search/?api=1&query=..." target="_blank" class="btn">Llegar a la iglesia</a>
-            </div>
-
-            <!-- --- Fiesta --- -->
-            <div class="evento-item">
-                <i class="icon fa-solid fa-champagne-glasses"></i>
-                <!-- EDITAR: Hora, Nombre y Dirección del Salón -->
-                <p class="hora">22:30 HS</p>
-                <p class="lugar">Las Pircas</p>
-                <p>Ruta 45 km 434</p>
-                <!-- EDITAR: Enlace de Google Maps para el salón -->
-                <a href="https://www.google.com/maps/search/?api=1&query=..." target="_blank" class="btn">Llegar al salón</a>
-            </div>
-            
-            <a href="#" class="btn btn-secondary" id="save-the-date-btn">
-                <i class="fa-regular fa-calendar-plus"></i> Agendar
-            </a>
-        </section>
-
-        <hr>
-
-        <!-- ===== SECCIÓN CÓDIGO DE VESTIMENTA ===== -->
-        <section class="section-content">
-            <h3>Dress Code</h3>
-            <i class="icon fa-solid fa-user-tie"></i>
-            <!-- EDITAR: Código de vestimenta -->
-            <p style="font-size: 1.2rem; font-weight: bold; color: var(--color-principal);">ELEGANTE</p>
-        </section>
-
-        <hr>
-
-        <!-- ===== SECCIÓN REGALO ===== -->
-        <section class="section-content">
-            <h3>Regalo</h3>
-            <i class="icon fa-solid fa-gift"></i>
-            <p>Para nosotros lo más importante es tu presencia, pero si quisieras hacernos un regalo, te dejamos nuestros datos bancarios.</p>
-            <button class="btn" id="open-modal-btn">Ver datos</button>
-        </section>
-        
-        <hr>
-
-        <!-- ===== SECCIÓN MÚSICA ===== -->
-        <section class="section-content">
-            <h3>Música</h3>
-            <i class="icon fa-solid fa-music"></i>
-            <p>Para que la fiesta sea completa, ¡ayudanos eligiendo aquellas canciones que no pueden faltar!</p>
-            <!-- EDITAR: Enlace a un formulario (ej. Google Forms) o a un chat para sugerir canciones -->
-            <a href="https://forms.gle/..." target="_blank" class="btn">Sugerir Canción</a>
-        </section>
-
-        <hr>
-
-        <!-- ===== SECCIÓN COMIDA ===== -->
-        <section class="section-content">
-            <h3>Comida</h3>
-            <i class="icon fa-solid fa-utensils"></i>
-            <p>Si contás con alguna restricción alimentaria (celíaco, vegano, vegetariano, etc.), por favor completá el siguiente formulario.</p>
-            <!-- EDITAR: Enlace a un formulario (ej. Google Forms) para restricciones alimentarias -->
-            <a href="https://forms.gle/..." target="_blank" class="btn">Completar</a>
-        </section>
-        
-        <hr>
-        
-        <!-- ===== SECCIÓN INSTAGRAM ===== -->
-        <section class="section-content">
-            <!-- EDITAR: Hashtag de la boda -->
-            <h3>#BodaJesicaJuan</h3>
-            <i class="icon fa-brands fa-instagram"></i>
-            <p>Usá nuestro hashtag para etiquetar tus fotos y videos de la boda.</p>
-            <!-- EDITAR: Enlace al hashtag en Instagram -->
-            <a href="https://www.instagram.com/explore/tags/BodaJesicajuan/" target="_blank" class="btn">Ver en Instagram</a>
-        </section>
-
-        <hr>
-
-        <!-- ===== SECCIÓN GALERÍA DE FOTOS ===== -->
-        <section class="section-content">
-            <h3>Cada familia tiene su historia...<br>¡Bienvenidos a la nuestra!</h3>
-            <div class="galeria">
-                <!-- EDITAR: Reemplaza los enlaces "..." con los enlaces directos a tus imágenes -->
-                <div class="foto-polaroid"><img src="https://res.cloudinary.com/dgo3agrzb/image/upload/v1756333185/Pixels_Fotografia_y_Video-232_t223ad.jpg" alt="Foto de la pareja 1"></div>
-                <div class="foto-polaroid"><img src="https://res.cloudinary.com/dgo3agrzb/image/upload/v1756333185/Screenshot_20230127_152730_Instagram_mn03bh.jpg"></div>
-                <div class="foto-polaroid"><img src="https://res.cloudinary.com/dgo3agrzb/image/upload/v1756333105/27_urot6j.jpg"></div>
-                <div class="foto-polaroid"><img src="https://res.cloudinary.com/dgo3agrzb/image/upload/v1756332995/pixels_Fotografia_y_Video-2_lfan0v.jpg"></div>
-            </div>
-        </section>
-
-        <hr>
-
-        <!-- ===== SECCIÓN CONFIRMAR ASISTENCIA (RSVP) ===== -->
-        <section class="section-content">
-            <h3>¡Los esperamos!</h3>
-            <i class="icon fa-regular fa-calendar-check"></i>
-            <!-- EDITAR: Fecha límite para confirmar -->
-            <p>Por favor, confirmar asistencia hasta el <strong>30 de Abril</strong>.</p>
-            <!-- EDITAR: Número de WhatsApp del novio (sin espacios ni símbolos) -->
-            <a href="https://wa.me/5493517364379?text=¡Hola%20Juan!%20Confirmo%20mi%20asistencia%20a%20la%20boda.%20¡Nos%20vemos!" target="_blank" class="btn">Confirmar al novio</a>
-            <!-- EDITAR: Número de WhatsApp de la novia (sin espacios ni símbolos) -->
-            <a href="https://wa.me/5493517364379?text=¡Hola%20Sol!%20Confirmo%20mi%20asistencia%20a%20la%20boda.%20¡Nos%20vemos!" target="_blank" class="btn">Confirmar a la novia</a>
-        </section>
-        
-        <footer>
-            <p style="font-size: 0.8rem; color: #aaa; margin-top: 20px;">Diseño por <a Pixels Fotografia y Video" target="_blank" style="color: #aaa;">didi.tarjetas</a></p>
-        </footer>
+    <audio id="bgMusic" loop>
+        <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+    </audio>
+    <div class="music-fab" onclick="toggleMusic()">
+        <i class="fas fa-music" id="musicIcon"></i>
     </div>
+
+    <header>
+        <div class="hero-subtitle">MIS XV AÑOS</div>
+        <h1 class="hero-title font-script">Marty</h1>
+        <div class="hero-date font-serif">7 • MARZO • 2026</div>
+        <div class="arrow-down"><i class="fas fa-chevron-down"></i></div>
+    </header>
+
+    <section class="intro" data-aos="fade-up">
+        <i class="fas fa-quote-left" style="color: var(--accent-color); font-size: 1.5rem; margin-bottom: 15px;"></i>
+        <p class="intro-text font-serif">
+            "Hay momentos inolvidables que se atesoran en el corazón para siempre, 
+            por eso quiero que compartas conmigo esta noche tan especial."
+        </p>
+        <i class="fas fa-quote-right" style="color: var(--accent-color); font-size: 1.5rem; margin-top: 15px;"></i>
+    </section>
+
+    <section class="countdown-section" data-aos="zoom-in">
+        <h2 class="font-script section-title" style="font-size: 2.5rem; margin-bottom: 20px;">Falta muy poco</h2>
+        <div class="timer-container" id="countdown">
+            <div class="time-box"><span class="time-number" id="days">00</span><span class="time-label">Días</span></div>
+            <div class="time-box"><span class="time-number" id="hours">00</span><span class="time-label">Hs</span></div>
+            <div class="time-box"><span class="time-number" id="minutes">00</span><span class="time-label">Min</span></div>
+            <div class="time-box"><span class="time-number" id="seconds">00</span><span class="time-label">Seg</span></div>
+        </div>
+    </section>
+
+    <section class="route-section" data-aos="fade-up">
+        <div class="sparkle-effect"></div>
+        <div class="route-content">
+            <h2 class="route-title">La Ruta</h2>
+            <p class="route-event-text">EVENTOS</p>
+            <a href="https://www.google.com/maps/place/La+Ruta+Eventos/@-31.3274003,-63.63642,17z/data=!3m1!4b1!4m6!3m5!1s0x9432de53d5e3093f:0xcdb78cdd92599683!8m2!3d-31.3274003!4d-63.6338451!16s%2Fg%2F11f3tr9p_9?authuser=0&entry=tts&g_ep=EgoyMDI1MTAyMi4wIPu8ASoASAFQAw%3D%3D&skid=ec23c9b6-3352-42c9-a682-7d8dc1c9bc8c" target="_blank" class="btn-route">
+                <span>CÓMO LLEGAR!</span> <i class="fas fa-chevron-right"></i>
+            </a>
+        </div>
+    </section>
     
-    <!-- ===== MODAL PARA DATOS BANCARIOS (REGALO) ===== -->
-    <div class="modal-overlay" id="gift-modal">
-        <div class="modal-content">
-            <span class="close-modal" id="close-modal-btn">&times;</span>
-            <h3>Nuestro Regalo</h3>
-            <div class="datos-bancarios">
-                <!-- EDITAR: Datos bancarios. Puedes añadir o quitar líneas <p> según necesites. -->
-                <p><strong>Banco:</strong> BBva</p>
-                <p><strong>Titular:</strong> Juan Pérez</p>
-                <p><strong>CBU/CVU:</strong> 0000001234567890000000</p>
-                <p><strong>Alias:</strong> JUAN.Jesi.BODA</p>
+    <div class="parallax-divider">
+        <h2 class="parallax-text font-script">Marty</h2>
+    </div>
+
+    <section class="details-container">
+        <div class="detail-item" data-aos="fade-up">
+            <div class="detail-icon"><i class="fas fa-tshirt"></i></div>
+            <h3 class="font-serif" style="margin-bottom: 10px;">Dress Code</h3>
+            <p>Elegante Sport</p>
+        </div>
+        <div class="detail-item" data-aos="fade-up" data-aos-delay="100">
+            <div class="detail-icon"><i class="fas fa-gift"></i></div>
+            <h3 class="font-serif" style="margin-bottom: 10px;">Regalos</h3>
+            <p style="font-size: 0.9rem;">Si deseas hacerme un presente, podés depositarlo en el buzón en la entrada del salón.</p>
+        </div>
+    </section>
+
+<section class="ticket-section" data-aos="fade-up">
+    <div class="ticket-wrapper">
+
+        <h2 class="section-title font-script">Valor de la Tarjeta</h2>
+
+        <div class="ticket-table">
+            <div class="ticket-row">
+                <span>Mayores</span>
+                <span>$47.000</span>
+            </div>
+            <div class="ticket-row">
+                <span>Compañeros</span>
+                <span>$29.000</span>
+            </div>
+            <div class="ticket-row">
+                <span>Menores</span>
+                <span>$23.500</span>
+            </div>
+            <div class="ticket-row">
+                <span>Después de doce</span>
+                <span>$20.000</span>
             </div>
         </div>
+
+        <div class="ticket-info">
+            <p><strong>CBU:</strong> 453000sddsdsd4967972706</p>
+            <p><strong>Alias:</strong> Analias.mp</p>
+            <p><strong>Titular:</strong> nombre</p>
+            <p><strong>Naranja X</strong></p>
+
+            <a href="https://wa.link/wbfyxg" class="btn-custom" style="margin-top: 20px;">
+                Enviar Comprobante
+            </a>
+        </div>
+
     </div>
+</section>
+
+    <section class="menu-section" data-aos="fade-up" style="background-color: var(--bg-color);">
+        <h2 class="section-title font-script">Menú y Dieta</h2>
+        <p style="max-width: 600px; margin: 0 auto 30px;">
+            Ayúdanos a elegir tu plato y a conocer si tienes alguna restricción alimentaria.
+        </p>
+        
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSeyMz_vq1XmhexId7w6FmYoJEWZTOwSNlS7681e2F0m8VmEGw/viewform?usp=header" target="_blank" class="btn-custom" style="margin-bottom: 0px; background-color: var(--accent-color); color: white; border-color: var(--accent-color);">
+            <i class="fas fa-utensils"></i> Ir al Formulario de Comida
+        </a>
+    </section>
+
+    <section class="songs-section" data-aos="fade-up" style="background-color: #fceff1;">
+        <h2 class="section-title font-script">Pista de Baile</h2>
+        <p style="max-width: 700px; margin: 0 auto 30px;">
+            ¡Queremos que no pares de bailar! Sugiere tu canción favorita para escucharla en la fiesta.
+        </p>
+        
+        <a href="https://docs.google.com/forms/d/e/1FAIpQLSdGIIqc0wsqQFnkOLG4M2JCojq4Yc8KVaL0JGeD9_muvb_H-Q/viewform?usp=publish-editor" class="btn-custom" style="margin-bottom: 30px;">
+            <i class="fas fa-headphones"></i> Sugerir una Canción
+        </a>
+
+        <h3 class="font-serif" style="margin-bottom: 20px;">Mi Playlist (¡Añade más!)</h3>
+        
+        <div style="max-width: 560px; margin: 0 auto; border-radius: 10px; overflow: hidden; box-shadow: 0 5px 15px rgba(0,0,0,0.1); border: 1px solid #ddd;">
+            <iframe width="100%" height="315" src="https://www.youtube.com/embed/videoseries?list=PLpaPENfnSLX9yKpDj1nboUqSahotkTJzQ" title="YouTube playlist" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        <a href="https://youtu.be/WMfOaOSz0R4?si=wYp3Bps2dgs2-GSc" target="_blank" target="_blank" style="display: block; margin-top: 15px; color: var(--primary-color); text-decoration: none;">Ver playlist completa en YouTube</a>
+    </section>
 
 
+    <section style="padding: 60px 20px; background-color: #fff;">
+        <h2 class="section-title font-script">Confirmación</h2>
+        <p style="max-width: 600px; margin: 0 auto 30px;">Por favor confirmar asistencia antes del 10 de Octubre.</p>
+        
+        <a href="https://api.whatsapp.com/send?phone=543517364379&text=Hola%20Marty!%20Confirmo%20mi%20asistencia%20a%20tus%20XV." target="_blank" class="btn-whatsapp">
+            <i class="fab fa-whatsapp"></i> Confirmar Asistencia
+        </a>
+    </section>
+
+    <footer>
+        <div class="footer-logo">Marty</div>
+        <p>Hecho con amor para mis XV</p>
+        <small style="opacity: 0.5; margin-top: 10px; display: block;">© 2024</small>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
-    // --- JAVASCRIPT PARA FUNCIONALIDADES ---
-    document.addEventListener('DOMContentLoaded', function() {
-
-        // --- Funcionalidad del Modal de Regalo ---
-        const openModalBtn = document.getElementById('open-modal-btn');
-        const closeModalBtn = document.getElementById('close-modal-btn');
-        const giftModal = document.getElementById('gift-modal');
-
-        openModalBtn.addEventListener('click', () => {
-            giftModal.classList.add('visible');
+        // INICIAR ANIMACIONES
+        AOS.init({
+            duration: 1000,
+            once: true
         });
 
-        closeModalBtn.addEventListener('click', () => {
-            giftModal.classList.remove('visible');
-        });
+        // --- LÓGICA DE CUENTA REGRESIVA (FECHA: 7 DE MARZO DE 2026) ---
+        // CAMBIAR FECHA: Formato "Mes Dia, Año Hora:Minuto:Segundo"
+        const eventDate = new Date("March 07, 2026 19:00:00").getTime();
 
-        giftModal.addEventListener('click', (e) => {
-            if (e.target === giftModal) {
-                giftModal.classList.remove('visible');
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days < 10 ? '0' + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? '0' + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? '0' + seconds : seconds;
+
+            if (distance < 0) {
+                clearInterval(timer);
+                document.getElementById("countdown").innerHTML = "<h3>¡Hoy es el gran día!</h3>";
             }
-        });
+        }, 1000);
 
-        // --- Funcionalidad para generar archivo de calendario (.ics) ---
-        const saveTheDateBtn = document.getElementById('save-the-date-btn');
-        saveTheDateBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            
-            // --- EDITAR: Detalles del evento para el calendario ---
-            const eventDetails = {
-                title: "Boda Juan y Jesi",
-                description: "Ceremonia de boda de Juan y Jesi.",
-                // Formato: YYYY, MM (0-11), DD, HH, MM
-                // Ejemplo para 12 de Mayo a las 21:00 -> new Date(2024, 4, 12, 21, 0)
-                // ¡RECUERDA QUE LOS MESES VAN DE 0 (Enero) a 11 (Diciembre)!
-                startTime: new Date(2026, 4, 12, 21, 0), 
-                endTime: new Date(2024, 4, 12, 22, 30), // Fin estimado de la ceremonia
-                location: "Capichinos"
-            };
-            // --- FIN DE LA EDICIÓN DEL EVENTO ---
+        // --- LÓGICA DEL REPRODUCTOR DE MÚSICA ---
+        const audio = document.getElementById("bgMusic");
+        const musicBtn = document.querySelector(".music-fab");
+        const musicIcon = document.getElementById("musicIcon");
 
-            // Función para formatear la fecha para el archivo .ics
-            function formatICalDate(date) {
-                return date.toISOString().replace(/[-:.]/g, '').slice(0, 15) + 'Z';
+        function toggleMusic() {
+            if (audio.paused) {
+                audio.play().catch(error => {
+                    console.error("Error al iniciar la reproducción:", error);
+                    alert("Por favor, interactúa con la página para permitir la reproducción de música.");
+                });
+                musicBtn.classList.add("music-rotating");
+                musicIcon.classList.remove("fa-music");
+                musicIcon.classList.add("fa-pause");
+            } else {
+                audio.pause();
+                musicBtn.classList.remove("music-rotating");
+                musicIcon.classList.remove("fa-pause");
+                musicIcon.classList.add("fa-music");
             }
-
-            const icsContent = [
-                'BEGIN:VCALENDAR',
-                'VERSION:2.0',
-                'BEGIN:VEVENT',
-                `URL:${document.URL}`,
-                `DTSTART:${formatICalDate(eventDetails.startTime)}`,
-                `DTEND:${formatICalDate(eventDetails.endTime)}`,
-                `SUMMARY:${eventDetails.title}`,
-                `DESCRIPTION:${eventDetails.description}`,
-                `LOCATION:${eventDetails.location}`,
-                'END:VEVENT',
-                'END:VCALENDAR'
-            ].join('\n');
-
-            const blob = new Blob([icsContent], { type: 'text/calendar;charset=utf-8' });
-            const link = document.createElement('a');
-            link.href = URL.createObjectURL(blob);
-            link.download = 'boda-juan-y-sol.ics';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        });
-    });
+        }
     </script>
-
 </body>
-
 </html>
-
